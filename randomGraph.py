@@ -2,10 +2,12 @@ import sys
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
+from parse import *
+import utils
 
 def main(numVertices):
     G = nx.Graph()
-    G.add_nodes_from([0, numVertices-1]) #TODO: Ensure the 0 index
+    G.add_nodes_from([0, numVertices-1])
 
     for vertex in range(numVertices):
         #List of vertices to connect to VERTEX
@@ -17,13 +19,13 @@ def main(numVertices):
         for edge in range(numVertices//2):
             G.add_edge(vertex, takenVertices[edge], weight=round(random.uniform(0.001, 99.999), 3))
 
+    filename = str(numVertices) + ".in"
+    write_input_file(G, filename)
+
+    read_input_file(filename)
+
     nx.draw(G, with_labels=True, font_weight='bold')
     plt.show()
-
-    #Call parse on G
-    #Return output
-
-    #In command, pipe output to file
 
 
 if __name__ == "__main__":
