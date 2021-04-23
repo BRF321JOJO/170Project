@@ -19,9 +19,10 @@ def maximalShortestPath(G, nodeLimit, edgeLimit):
     for i in range(edgeLimit): #Remove edgeLimit edges
         shortest_path, shortest_path_length = shortestPath(G) #Calculate new shortest path in G
         edgeTupleList = [(shortest_path[i], shortest_path[i+1]) for i in range(len(shortest_path) - 1)] #Convert shortest path to list of edges
-        edgeList = [(edge[0], edge[1], G[edge[0]][edge[1]]) for edge in edgeTupleList]
+        edgeList = [(edge[0], edge[1], G[edge[0]][edge[1]]) for edge in edgeTupleList] #Convert edgesTuples to edges
+        edgeList.sort(key=lambda x: x[2]['weight'])
 
-        for edge in edgeTupleList: #Remove first edge that doesn't disconnect the graph
+        for edge in edgeList: #Remove first edge that doesn't disconnect the graph
             if (edge not in nx.algorithms.bridges(G)):
                 G.remove_edge(edge[0], edge[1])
                 #print(edge[0], edge[1])
