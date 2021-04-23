@@ -1,9 +1,10 @@
 import sys
+sys.path.append("./project-sp21-skeleton")
+from parse import *
+
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
-from parse import *
-import utils
 
 def main(numVertices):
     G = nx.Graph()
