@@ -13,6 +13,8 @@ def genMaxShortestPath(G, nodeLimit, edgeLimit):
     source = 0
     target = G.number_of_nodes() - 1
     
+    removed_nodes = []
+    removed_edges = []
 
     #Modify G into G_prime, to maximize shortest path
 
@@ -25,7 +27,7 @@ def genMaxShortestPath(G, nodeLimit, edgeLimit):
         for edge in edgeList: #Remove first edge that doesn't disconnect the graph
             if (edge not in nx.algorithms.bridges(G)):
                 G.remove_edge(edge[0], edge[1])
-                #print(edge[0], edge[1])
+                removed_edges.append((edge[0], edge[1]))
                 break
 
 
@@ -38,10 +40,10 @@ def genMaxShortestPath(G, nodeLimit, edgeLimit):
     print("The new shortest path is " + str(delta_gained) + " distance longer")
 
     #Show new G
-    nx.draw(G, with_labels=True, font_weight='bold')
-    plt.show()
+    #nx.draw(G, with_labels=True, font_weight='bold')
+    #plt.show()
 
-    return new_shortest_path, new_shortest_path_length
+    return removed_nodes, removed_edges
 
 
 if __name__ == "__main__":

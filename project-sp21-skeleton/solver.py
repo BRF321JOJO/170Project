@@ -17,6 +17,19 @@ def solve(G):
     pass
 
 
+# For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
+if __name__ == '__main__':
+    inputs = glob.glob('inputs/*')
+    for input_path in inputs:
+        output_path = 'outputs/' + basename(normpath(input_path))[:-3] + '.out'
+        G = read_input_file(input_path)
+        c, k = solve(G)
+        assert is_valid_solution(G, c, k)
+        distance = calculate_score(G, c, k)
+        write_output_file(G, c, k, output_path)
+
+        
+
 # Here's an example of how to run your solver.
 
 # Usage: python3 solver.py test.in
