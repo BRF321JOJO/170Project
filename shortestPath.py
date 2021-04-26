@@ -10,9 +10,8 @@ def main(inputFile):
     G = read_input_file("inputs/" + inputFile)
     shortestPath(G)
 
-def shortestPath(G):
+def shortestPath(G, target):
     source = 0
-    target = G.number_of_nodes() - 1
     shortest_path = nx.algorithms.shortest_paths.weighted.dijkstra_path(G, source, target)
     shortest_path_length = nx.classes.function.path_weight(G, shortest_path, weight="weight")
 
