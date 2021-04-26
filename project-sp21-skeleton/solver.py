@@ -37,9 +37,9 @@ def solve(G, size):
 if __name__ == '__main__':
 
     inputs = glob.glob('inputs/*')
-    for input_path in inputs:
+    for input_path in inputs:   #Iterate through folders in inputs
         files = glob.glob(input_path + "/*")
-        for file_path in files:  #Iterates through every file name
+        for file_path in files:  #Iterates through every file in every folder
 
             print("Begin processing {}".format(file_path))
             G = read_input_file(file_path)  #Reads in the next graph
