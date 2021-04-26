@@ -8,7 +8,9 @@ def main(inputFile, nodeLimit, edgeLimit):
     G = read_input_file("inputs/" + inputFile)
     return genMaxShortestPath(G, nodeLimit, edgeLimit)
 
-def genMaxShortestPath(G, nodeLimit, edgeLimit):
+def genMaxShortestPath(H, nodeLimit, edgeLimit):
+    G = H.copy()
+
     #Find shortest_path info on G
     source = 0
     target = G.number_of_nodes() - 1
@@ -26,18 +28,19 @@ def genMaxShortestPath(G, nodeLimit, edgeLimit):
 
         for edge in edgeList: #Remove first edge that doesn't disconnect the graph
             if (edge not in nx.algorithms.bridges(G)):
+                assert G.has_edge(edge[0], edge[1]), "No such edge"
                 G.remove_edge(edge[0], edge[1])
                 removed_edges.append((edge[0], edge[1]))
                 break
 
 
     #Find shortest_path info on final G
-    new_shortest_path, new_shortest_path_length = shortestPath(G)
+    #new_shortest_path, new_shortest_path_length = shortestPath(G)
 
     #Output information about shortest_path distance increase
-    delta_gained = new_shortest_path_length - shortest_path_length
-    print("The new shortest path is " + str(new_shortest_path_length))
-    print("The new shortest path is " + str(delta_gained) + " distance longer")
+    #delta_gained = new_shortest_path_length - shortest_path_length
+    #print("The new shortest path is " + str(new_shortest_path_length))
+    #print("The new shortest path is " + str(delta_gained) + " distance longer")
 
     #Show new G
     #nx.draw(G, with_labels=True, font_weight='bold')
