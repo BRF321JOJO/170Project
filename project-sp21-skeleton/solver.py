@@ -5,12 +5,13 @@ import sys
 from os.path import basename, normpath
 import glob
 
-#NEW
+
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from maximizeShortestPath import genMaxShortestPath
 
-def solve(G, nodeLimit, edgeLimit):
+
+def solve(G, size):
     """
     Args:
         G: networkx.Graph
@@ -18,33 +19,41 @@ def solve(G, nodeLimit, edgeLimit):
         c: list of cities to remove
         k: list of edges to remove
     """
+
+    if size == "small":
+        nodeLimit = 1
+        edgeLimit = 15   
+    elif size == "medium":
+        nodeLimit = 3
+        edgeLimit = 50 
+    else:
+        nodeLimit = 5
+        edgeLimit = 100 
+
     return genMaxShortestPath(G, nodeLimit, edgeLimit)
 
 
 # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
+
     inputs = glob.glob('inputs/*')
     for input_path in inputs:
         files = glob.glob(input_path + "/*")
-        for file_path in files:
+        for file_path in files:  #Iterates through every file name
 
-            G = read_input_file(file_path)
+            print("Begin processing {}".format(file_path))
+            G = read_input_file(file_path)  #Reads in the next graph
+            
+            #Calculates the list of vertices (v) and edges (e) to remove
             size = input_path[7:]
+            v, e = solve(G, size)
             
-            if size == "small":
-                c, k = solve(G, 1, 15)
-            elif size == "medium":
-                c, k = solve(G, 3, 50)
-            else:
-                c, k = solve(G, 5, 100)
-            
-            
-            assert is_valid_solution(G, c, k)
-            print(file_path)
-            distance = calculate_score(G, c, k)
+            assert is_valid_solution(G, v, e)
+            distance = calculate_score(G, v, e)
+            print("Output increases shortest path by: " + str(distance))
 
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
-            write_output_file(G, c, k, output_path)
+            write_output_file(G, v, e, output_path)
 
 
 # Here's an example of how to run your solver.
