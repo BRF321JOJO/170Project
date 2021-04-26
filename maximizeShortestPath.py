@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 def main(inputFile, nodeLimit, edgeLimit):
     G = read_input_file("inputs/" + inputFile)
-    return maximalShortestPath(G, nodeLimit, edgeLimit)
+    return genMaxShortestPath(G, nodeLimit, edgeLimit)
 
-def maximalShortestPath(G, nodeLimit, edgeLimit):
+def genMaxShortestPath(G, nodeLimit, edgeLimit):
     #Find shortest_path info on G
     source = 0
     target = G.number_of_nodes() - 1
