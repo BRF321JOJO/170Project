@@ -72,14 +72,12 @@ def EDGEremoveBruteForce(G, edgeLimit, target):
     sp = shortestPath(G, target)
     sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]
 
-    dict = {}
-    update = False
+    edgeDict = {}
     for edge in sp_edges:
         edgeReverse = (edge[1], edge[0])
         bridgeList = list(nx.bridges(G))
 
         if (edge not in bridgeList) and (edgeReverse not in bridgeList):
-            update = True
             H = G.copy()
             H.remove_edge(edge[0], edge[1])
 
@@ -89,12 +87,12 @@ def EDGEremoveBruteForce(G, edgeLimit, target):
 
             H.add_edge(edge[0], edge[1])
             H.remove_edges_from(all_removed)
-            dict[tuple(all_removed)] = shortestPath(H, target)
+            edgeDict[tuple(all_removed)] = shortestPath(H, target)
 
-    if not update:
+    if not edgeDict:
         return []
+    return list(max(edgeDict, key=lambda x: edgeDict[x]))
 
-    return list(max(dict, key=lambda x: dict[x]))
 
 
 def main(inputFile, nodeLimit, edgeLimit):
