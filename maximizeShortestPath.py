@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def genMaxShortestPath(H, vertexLimit, edgeLimit):
     G = H.copy()
     target = G.number_of_nodes() - 1
-    removed_nodes = VERTEXremoveHighestDegree(G, vertexLimit, target)
+    removed_nodes = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
     removed_edges = EDGEremoveBruteForce(G, edgeLimit, target)
     return removed_nodes, removed_edges
 
@@ -21,7 +21,7 @@ def shortestPath(G, t):
 
 
 
-def VERTEXremoveHighestDegree(G, vertexLimit, target):
+def VERTEXremoveGreedyHighestDegree(G, vertexLimit, target):
     removed_nodes = []
     for i in range(vertexLimit):  #Remove verexLimit vertices
         sp = shortestPath(G, target)  #Calculate new shortest path in G
@@ -37,7 +37,7 @@ def VERTEXremoveHighestDegree(G, vertexLimit, target):
     return removed_nodes
 
 
-def EDGEremoveShortest(G, edgeLimit, target):
+def EDGEremoveGreedyShortest(G, edgeLimit, target):
     removed_edges = []
     for i in range(edgeLimit):  #Remove edgeLimit edges
         sp = shortestPath(G, target)  #Calculate new shortest path in G
@@ -80,6 +80,21 @@ def EDGEremoveBruteForce(G, edgeLimit, target):
             print("Removed " + str(edge1) + str(edge2))
             print("The shortest path is " + str(sp3))
             print(sp_length)
+
+
+    #NEW CODE
+    if edgeLimit == 0:
+        return []
+
+    sp = shortestPath(G, target)
+    sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]
+
+    for edge in sp_edges:
+        H = G.copy()
+        H.remove_edge(edge[0], edge[1])
+        EDGEremoveBruteForce(H, edgeLimit - 1, target)
+        #todo: add articulation point/bridge logic
+
 
 
 
