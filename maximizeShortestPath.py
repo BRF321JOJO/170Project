@@ -2,15 +2,31 @@ import sys
 sys.path.append("./project-sp21-skeleton")
 from parse import *
 import networkx as nx
-import matplotlib.pyplot as plt
+from utils import calculate_score
 
 
 def genMaxShortestPath(H, vertexLimit, edgeLimit):
+    target = H.number_of_nodes() - 1
+
+    solutions = []
+
+    # Solution 1
     G = H.copy()
-    target = G.number_of_nodes() - 1
-    removed_nodes = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
-    removed_edges = EDGEremoveBruteForce(G, edgeLimit, target)
-    return removed_nodes, removed_edges
+    e1 = EDGEremoveGreedyShortest(G, edgeLimit, target)
+    v1 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    solutions.append((v1, e1))
+
+    # Solution 2
+    G = H.copy()
+    v2 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    e2 = EDGEremoveGreedyShortest(G, edgeLimit, target)
+    solutions.append((v2, e2))
+
+    # Solution 3
+
+    
+    #Maximize over the solutions
+    return max(solutions, key=lambda x: calculate_score(H, x[0], x[1]))
 
 
 #Returns list of vertices in shortest path in G
