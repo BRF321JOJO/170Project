@@ -22,7 +22,7 @@ def solve(G, size):
 
     if size == "small":
         nodeLimit = 1
-        edgeLimit = 15   
+        edgeLimit = 15
     elif size == "medium":
         nodeLimit = 3
         edgeLimit = 50 
