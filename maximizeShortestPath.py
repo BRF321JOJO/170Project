@@ -9,7 +9,7 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     G = H.copy()
     target = G.number_of_nodes() - 1
     removed_nodes = VERTEXremoveHighestDegree(G, vertexLimit, target)
-    removed_edges = EDGEremoveShortest(G, edgeLimit, target)
+    removed_edges = EDGEremoveBruteForce(G, edgeLimit, target)
     return removed_nodes, removed_edges
 
 
@@ -58,6 +58,28 @@ def EDGEremoveShortest(G, edgeLimit, target):
             break
 
     return removed_edges
+
+
+def EDGEremoveBruteForce(G, edgeLimit, target):
+    sp = shortestPath(G, 6)
+    sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]
+
+    for edge1 in sp_edges:
+        H = G.copy()
+        H.remove_edge(edge1[0], edge1[1])
+
+        sp2 = shortestPath(H, 6)
+        sp2_edges = [(sp2[i], sp2[i + 1]) for i in range(len(sp2) - 1)]
+
+        for edge2 in sp2_edges:
+            I = H.copy()
+            I.remove_edge(edge2[0], edge2[1])
+
+            sp3 = shortestPath(I, 6)
+            sp_length = nx.classes.function.path_weight(I, sp3, weight="weight")
+            print("Removed " + str(edge1) + str(edge2))
+            print("The shortest path is " + str(sp3))
+            print(sp_length)
 
 
 

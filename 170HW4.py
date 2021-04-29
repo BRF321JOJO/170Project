@@ -28,7 +28,7 @@ G.add_edge(4, 5, weight=2)
 G.add_edge(5, 6, weight=4)
 
 
-'''
+
 #Testing removal of two edges to maximize shortest path
 
 sp = shortestPath(G, 6)
@@ -50,8 +50,9 @@ for edge1 in sp_edges:
         print("Removed " + str(edge1) + str(edge2))
         print("The shortest path is " + str(sp3))
         print(sp_length)
-'''
 
+
+'''
 #Testing removal of node to maximize shortest path
 sp = shortestPath(G, 6)
 sp_length = nx.classes.function.path_weight(G, sp, weight="weight")
@@ -67,7 +68,7 @@ for node in sp:
     print("Removed " + str(node))
     print("The shortest path is " + str(sp2))
     print(sp_length)
-
+'''
 
 
 #Testing removal of each of the edges on the shortest path
