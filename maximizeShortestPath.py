@@ -52,13 +52,12 @@ def pathLength(G, path):
 
 
 def VERTEXremoveRandomized(G, vertexLimit, target):
+    vertices = list(G.nodes())
+    vertices.remove(0)
+    vertices.remove(target)
+    vertexLimit = min(vertexLimit, len(vertices))
+
     while vertexLimit > 0:
-        vertices = list(G.nodes())
-        vertices.remove(0)
-        vertices.remove(target)
-
-        vertexLimit = min(vertexLimit, len(vertices))
-
         to_remove = random.sample(vertices, k=vertexLimit)
         H = G.copy()
         H.remove_nodes_from(to_remove)
@@ -72,10 +71,10 @@ def VERTEXremoveRandomized(G, vertexLimit, target):
     return []
 
 def EDGEremoveRandomized(G, edgeLimit):
-    while edgeLimit > 0:
-        edges = G.edges()
-        edgeLimit = min(edgeLimit, len(edges))
+    edges = G.edges()
+    edgeLimit = min(edgeLimit, len(edges))
 
+    while edgeLimit > 0:
         to_remove = random.sample(edges, k=edgeLimit)
         H = G.copy()
         H.remove_edges_from(to_remove)

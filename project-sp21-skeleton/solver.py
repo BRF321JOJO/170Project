@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from maximizeShortestPath import genMaxShortestPath
 
 
-def solve(G, size):
+def solve(G, size, file_path):
     """
     Args:
         G: networkx.Graph
@@ -16,7 +16,6 @@ def solve(G, size):
         c: list of cities to remove
         k: list of edges to remove
     """
-
     if size == "small":
         nodeLimit = 1
         edgeLimit = 15
@@ -46,7 +45,7 @@ if __name__ == '__main__':
             G = read_input_file(file_path)  # Reads in the next graph
 
             size = input_path[7:]
-            v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
+            v, e = solve(G, size, file_path)  # Calculates the list of vertices (v) and edges (e) to remove
 
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
             currBest_distance = read_output_file(G, output_path)

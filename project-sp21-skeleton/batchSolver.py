@@ -11,14 +11,18 @@ from solver import solve
 
 if __name__ == '__main__':
     number_iters = int(sys.argv[1])  # Specifies the number of iterations to run per file
+    specified_files = sys.argv[2:]  #Specifies running certain files
 
     overall_improvement = 0  # Counts the number of outputs improved
 
     inputs = glob.glob('inputs/*')
     for input_path in inputs:  # Iterate through folders in inputs
         files = glob.glob(input_path + "/*")
-        for file_path in files:  # Iterates through every file in every folder
 
+        if specified_files:
+            files = list(specified_files)
+
+        for file_path in files:  # Iterates through every file in every folder
             print("Begin processing {}".format(file_path))
             G = read_input_file(file_path)  # Reads in the next graph
 
@@ -32,7 +36,7 @@ if __name__ == '__main__':
             for i in range(number_iters):
                 # print("Iteration: " + str(i + 1))
 
-                v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
+                v, e = solve(G, size, file_path)  # Calculates the list of vertices (v) and edges (e) to remove
 
                 currBest_distance = read_output_file(G, output_path)
                 this_distance = calculate_score(G, v, e)

@@ -4,8 +4,9 @@ from parse import read_input_file, read_output_file
 
 if __name__ == '__main__':
     number = sys.argv[1]
+    size = sys.argv[2]
 
-    file_path = "savedInputs/inputs/medium/medium-"+number+".in"
+    file_path = "savedInputs/inputs/" + size + "/" + size + "-" + number + ".in"
     G = read_input_file(file_path)
 
     merge1_path = 'merge1.out'
@@ -20,4 +21,5 @@ if __name__ == '__main__':
         print("MERGE1 file has a better distance")
     else:
         print("MERGE2 file has a better distance")
+
 
