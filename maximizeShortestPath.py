@@ -27,10 +27,10 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
 
 
     # Solution 4: Randomized
-    # G = H.copy()
-    # e4 = EDGEremoveRandomized(G, edgeLimit, target)
-    # v4 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
-    # solutions.append((v4, e4))
+    G = H.copy()
+    v4 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    e4 = EDGEremoveRandomized(G, edgeLimit, target)
+    solutions.append((v4, e4))
 
     #Maximize over the solutions
     return max(solutions, key=lambda x: calculate_score(H, x[0], x[1]))
@@ -46,6 +46,11 @@ def shortestPath(G, t):
 # Returns length of path in G
 def pathLength(G, path):
     return nx.classes.function.path_weight(G, path, weight="weight")
+
+
+def EDGEremoveRandomized(G, edgeLimit, target):
+    
+
 
 
 def VERTEXremoveGreedyHighestDegree(G, vertexLimit, target):
