@@ -29,11 +29,18 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
 
 
     # Solution 4: Randomized
+    # G = H.copy()
+    # v4 = VERTEXremoveRandomized(G, vertexLimit, target)
+    # G.remove_nodes_from(v4)
+    # e4 = EDGEremoveRandomized(G, edgeLimit)
+    # solutions.append((v4, e4))
+
+    # Solution 5: Random over SP
     G = H.copy()
-    v4 = VERTEXremoveRandomized(G, vertexLimit, target)
-    G.remove_nodes_from(v4)
-    e4 = EDGEremoveRandomized(G, edgeLimit)
-    solutions.append((v4, e4))
+    v5 = VERTEXremoveRandomized(G, vertexLimit, target)
+    G.remove_nodes_from(v5)
+    e5 = EDGEremoveSPrandom(G, edgeLimit, target)
+    solutions.append((v5, e5))
 
     #Maximize over the solutions
     return max(solutions, key=lambda x: calculate_score(H, x[0], x[1]))
@@ -70,12 +77,13 @@ def VERTEXremoveRandomized(G, vertexLimit, target):
     print("OUTPUT FAILED ENTIRELY, vertices")
     return []
 
+
+
 def EDGEremoveRandomized(G, edgeLimit):
-    edges = G.edges()
-    edgeLimit = min(edgeLimit, len(edges))
+    edgeLimit = min(edgeLimit, G.number_of_edges)
 
     while edgeLimit > 0:
-        to_remove = random.sample(edges, k=edgeLimit)
+        to_remove = random.sample(G.edges(), k=edgeLimit)
         H = G.copy()
         H.remove_edges_from(to_remove)
 
@@ -126,6 +134,28 @@ def EDGEremoveGreedyShortest(G, edgeLimit, target):
 
     return removed_edges
 
+
+def EDGEremoveSPrandom(G, edgeLimit, target):
+    removed_edges = []
+    for i in range(edgeLimit):  # Remove edgeLimit edges
+        sp = shortestPath(G, target)  # Calculate new shortest path in G
+        sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]  # Convert shortest path to list of edges
+        random.shuffle(sp_edges)
+
+        update = False
+        for edge in sp_edges:
+            edgeReverse = (edge[1], edge[0])
+            bridgeList = list(nx.bridges(G))
+            if (edge not in bridgeList) and (edgeReverse not in bridgeList):  # Don't remove edge that disconnects graph
+                update = True
+                G.remove_edge(edge[0], edge[1])
+                removed_edges.append(edge)
+                break
+
+        if not update:  # Break loop when shortest path cannot increase without disconnecting graph
+            break
+
+    return removed_edges
 
 def EDGEremoveBruteForce(G, edgeLimit, target):
     if edgeLimit == 0:
