@@ -1,3 +1,5 @@
+import random
+
 from parse import read_input_file, write_output_file, read_output_file
 from utils import is_valid_solution, calculate_score
 import glob
@@ -21,6 +23,8 @@ if __name__ == '__main__':
 
         if specified_files:
             files = list(specified_files)
+
+        random.shuffle(files)
 
         for file_path in files:  # Iterates through every file in every folder
             print("Begin processing {}".format(file_path))
