@@ -1,5 +1,5 @@
 import networkx as nx
-from parse import read_input_file, write_output_file
+from parse import read_input_file, write_output_file, read_output_file
 from utils import is_valid_solution, calculate_score
 import sys
 from os.path import basename, normpath
@@ -49,12 +49,20 @@ if __name__ == '__main__':
             v, e = solve(G, size)
             
             assert is_valid_solution(G, v, e)
-            distance = calculate_score(G, v, e)
-            print("Output increases shortest path by: " + str(distance))
 
+
+            # Compare result to current output file. Only overwrite output if better.
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
-            write_output_file(G, v, e, output_path)
+            currBest_distance = read_output_file(G, output_path)
 
+            this_distance = calculate_score(G, v, e)
+
+            if currBest_distance >= this_distance:
+                print("Current output is better or equal to this output. No output file written.")
+            else:
+                print("Output distance IMPROVED by: " + str(this_distance - currBest_distance))
+                print("NEW shortest path is length: " + str(this_distance))
+                write_output_file(G, v, e, output_path)
 
 # Here's an example of how to run your solver.
 

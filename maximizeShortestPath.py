@@ -23,8 +23,15 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     solutions.append((v2, e2))
 
     # Solution 3
+    #Try repeated k=5 brute forces
 
-    
+
+    # Solution 4: Randomized
+    # G = H.copy()
+    # e4 = EDGEremoveRandomized(G, edgeLimit, target)
+    # v4 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    # solutions.append((v4, e4))
+
     #Maximize over the solutions
     return max(solutions, key=lambda x: calculate_score(H, x[0], x[1]))
 
