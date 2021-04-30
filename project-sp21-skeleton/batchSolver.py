@@ -37,7 +37,7 @@ if __name__ == '__main__':
                 currBest_distance = read_output_file(G, output_path)
                 this_distance = calculate_score(G, v, e)
 
-                if not currBest_distance >= this_distance:
+                if currBest_distance < this_distance:
                     was_improvement = True
                     improvements += 1
                     total_path_increased += (this_distance - currBest_distance)
