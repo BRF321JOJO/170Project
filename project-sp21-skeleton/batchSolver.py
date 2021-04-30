@@ -29,7 +29,7 @@ if __name__ == '__main__':
             was_improvement = False
 
             for i in range(number_iters):
-                print("Iteration: " + str(i + 1))
+                # print("Iteration: " + str(i + 1))
 
                 v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
                 assert is_valid_solution(G, v, e)

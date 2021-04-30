@@ -4,6 +4,8 @@ from parse import *
 import networkx as nx
 from utils import calculate_score
 
+import random
+
 
 def genMaxShortestPath(H, vertexLimit, edgeLimit):
     target = H.number_of_nodes() - 1
@@ -29,7 +31,7 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     # Solution 4: Randomized
     G = H.copy()
     v4 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
-    e4 = EDGEremoveRandomized(G, edgeLimit, target)
+    e4 = EDGEremoveRandomized(G, edgeLimit)
     solutions.append((v4, e4))
 
     #Maximize over the solutions
@@ -48,9 +50,22 @@ def pathLength(G, path):
     return nx.classes.function.path_weight(G, path, weight="weight")
 
 
-def EDGEremoveRandomized(G, edgeLimit, target):
-    
+def EDGEremoveRandomized(G, edgeLimit):
+    while edgeLimit > 0:
+        edges = G.edges()
+        edgeLimit = min(edgeLimit, len(edges))
 
+        to_remove = random.sample(edges, k=edgeLimit)
+        H = G.copy()
+        H.remove_edges_from(to_remove)
+
+        if not nx.is_connected(H):
+            edgeLimit -= 1
+        else:
+            return to_remove
+
+    print("OUTPUT FAILED ENTIRELY")
+    return []
 
 
 def VERTEXremoveGreedyHighestDegree(G, vertexLimit, target):
