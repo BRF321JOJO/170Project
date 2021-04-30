@@ -47,7 +47,6 @@ if __name__ == '__main__':
 
             size = input_path[7:]
             v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
-            assert is_valid_solution(G, v, e)
 
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
             currBest_distance = read_output_file(G, output_path)

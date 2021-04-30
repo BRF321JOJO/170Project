@@ -30,7 +30,8 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
 
     # Solution 4: Randomized
     G = H.copy()
-    v4 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    v4 = VERTEXremoveRandomized(G, vertexLimit, target)
+    G.remove_nodes_from(v4)
     e4 = EDGEremoveRandomized(G, edgeLimit)
     solutions.append((v4, e4))
 
@@ -50,6 +51,26 @@ def pathLength(G, path):
     return nx.classes.function.path_weight(G, path, weight="weight")
 
 
+def VERTEXremoveRandomized(G, vertexLimit, target):
+    while vertexLimit > 0:
+        vertices = list(G.nodes())
+        vertices.remove(0)
+        vertices.remove(target)
+
+        vertexLimit = min(vertexLimit, len(vertices))
+
+        to_remove = random.sample(vertices, k=vertexLimit)
+        H = G.copy()
+        H.remove_nodes_from(to_remove)
+
+        if not nx.is_connected(H):
+            vertexLimit -= 1
+        else:
+            return to_remove
+
+    print("OUTPUT FAILED ENTIRELY, vertices")
+    return []
+
 def EDGEremoveRandomized(G, edgeLimit):
     while edgeLimit > 0:
         edges = G.edges()
@@ -64,7 +85,7 @@ def EDGEremoveRandomized(G, edgeLimit):
         else:
             return to_remove
 
-    print("OUTPUT FAILED ENTIRELY")
+    print("OUTPUT FAILED ENTIRELY, edges")
     return []
 
 

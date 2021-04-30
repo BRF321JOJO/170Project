@@ -11,6 +11,7 @@ from solver import solve
 
 if __name__ == '__main__':
     number_iters = int(sys.argv[1])  # Specifies the number of iterations to run per file
+
     overall_improvement = 0  # Counts the number of outputs improved
 
     inputs = glob.glob('inputs/*')
@@ -32,7 +33,6 @@ if __name__ == '__main__':
                 # print("Iteration: " + str(i + 1))
 
                 v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
-                assert is_valid_solution(G, v, e)
 
                 currBest_distance = read_output_file(G, output_path)
                 this_distance = calculate_score(G, v, e)
@@ -47,7 +47,9 @@ if __name__ == '__main__':
 
             if was_improvement:
                 overall_improvement += 1
-            print("TOTAL TIMES OUTPUT IMPROVED: " + str(improvements))
-            print("TOTAL DISTANCE IMPROVED BY: " + str(total_path_increased))
+
+            if improvements:
+                print("TOTAL TIMES OUTPUT IMPROVED: " + str(improvements))
+                print("TOTAL DISTANCE IMPROVED BY: " + str(total_path_increased))
 
     print("TOTAL OUTPUTS IMPROVED: " + str(overall_improvement))
