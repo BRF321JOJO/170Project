@@ -4,7 +4,7 @@ from parse import read_input_file, read_output_file
 
 if __name__ == '__main__':
 
-    file_path = "project-sp21-skeleton/inputs/small/small-152.in"
+    file_path = "project-sp21-skeleton/inputs/small/small-135.in"
     G = read_input_file(file_path)
 
     merge1_path = 'merge1.out'
