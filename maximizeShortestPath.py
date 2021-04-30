@@ -11,16 +11,16 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     solutions = []
 
     # Solution 1
-    G = H.copy()
-    e1 = EDGEremoveGreedyShortest(G, edgeLimit, target)
-    v1 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
-    solutions.append((v1, e1))
+    # G = H.copy()
+    # e1 = EDGEremoveGreedyShortest(G, edgeLimit, target)
+    # v1 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    # solutions.append((v1, e1))
 
     # Solution 2
-    G = H.copy()
-    v2 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
-    e2 = EDGEremoveGreedyShortest(G, edgeLimit, target)
-    solutions.append((v2, e2))
+    # G = H.copy()
+    # v2 = VERTEXremoveGreedyHighestDegree(G, vertexLimit, target)
+    # e2 = EDGEremoveGreedyShortest(G, edgeLimit, target)
+    # solutions.append((v2, e2))
 
     # Solution 3
     #Try repeated k=5 brute forces

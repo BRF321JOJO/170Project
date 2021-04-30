@@ -36,6 +36,8 @@ def solve(G, size):
 # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
 
+    improvements = 0 # Counts the number of outputs improved
+
     inputs = glob.glob('inputs/*')
     for input_path in inputs:   #Iterate through folders in inputs
         files = glob.glob(input_path + "/*")
@@ -54,15 +56,19 @@ if __name__ == '__main__':
             # Compare result to current output file. Only overwrite output if better.
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
             currBest_distance = read_output_file(G, output_path)
+            #currBest_distance = -1 # DEBUG
 
             this_distance = calculate_score(G, v, e)
 
             if currBest_distance >= this_distance:
                 print("Current output is better or equal to this output. No output file written.")
             else:
+                improvements += 1
                 print("Output distance IMPROVED by: " + str(this_distance - currBest_distance))
                 print("NEW shortest path is length: " + str(this_distance))
                 write_output_file(G, v, e, output_path)
+
+    print("TOTAL OUTPUTS IMPROVED: " + str(improvements))
 
 # Here's an example of how to run your solver.
 
