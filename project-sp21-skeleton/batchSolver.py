@@ -28,11 +28,31 @@ if __name__ == '__main__':
 
         random.shuffle(files)
 
+        size = input_path[7:]
+
+        # Specify files not to run
+        small_files_to_skip = [2,18,22,24,26,31,47,48,49,51,53,56,60,63,67,74,75,84,85,89,92,93,95,100,120,125,129,133,139,141,147,151,158,159,161,164,166,168,170,174,176,177,178,179,186,188,190,194,195,196,198,199,201,205,209,210,212,213,215,221,224,227,230,233,235,236,246,254,259,263]
+        small_files_to_skip_strings = [input_path + '/' + size + '-' + str(x) + '.in' for x in small_files_to_skip]
+        medium_files_to_skip = [31,35,48,49,51,53,54,60,67,75,85,89,100,120,129,133,139,160,164,166,167,174,176,179,186,194,195,196,198,199,212,215,221,222,227,233,236,262]
+        medium_files_to_skip_strings = [input_path + '/' + size + '-' + str(x) + '.in' for x in medium_files_to_skip]
+        large_files_to_skip = [31,35,46,48,49,51,53,54,60,63,67,75,85,89,90,92,100,120,133,139,151,164,168,174,176,195,198,199,212,215,221,227,262]
+        large_files_to_skip_strings = [input_path + '/' + size + '-' + str(x) + '.in' for x in large_files_to_skip]
+
+        if size == "small":
+            files = [x for x in files if x not in small_files_to_skip_strings]
+        elif size == "medium":
+            files = [x for x in files if x not in medium_files_to_skip_strings]
+        elif size == "large":
+            files = [x for x in files if x not in large_files_to_skip_strings]
+        else:
+            assert "FAILED TO CATCH ON CORRECT SIZE, 2"
+
+
         for file_path in files:  # Iterates through every file in every folder
             print("Begin processing {}".format(file_path))
             G = read_input_file(file_path)  # Reads in the next graph
 
-            size = input_path[7:]
+
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
 
             improvements = 0  # Counts the number of times this output improved
