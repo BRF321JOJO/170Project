@@ -18,6 +18,8 @@ if __name__ == '__main__':
     overall_improvement = 0  # Counts the number of outputs improved
 
     inputs = glob.glob('inputs/*')
+    random.shuffle(inputs)
+
     for input_path in inputs:  # Iterate through folders in inputs
         files = glob.glob(input_path + "/*")
 
