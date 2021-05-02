@@ -80,11 +80,11 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     # solutions.append((v9, e9))
 
     # Solution 10:
-    G = H.copy()
-    v10 = VERTEXremoveSPrandom(G, vertexLimit, target)
-    G.remove_nodes_from(v10)
-    e10 = EDGEremoveSPrandomWEIGHTEDexpovariate(G, edgeLimit, target)
-    solutions.append((v10, e10))
+    # G = H.copy()
+    # v10 = VERTEXremoveSPrandom(G, vertexLimit, target)
+    # G.remove_nodes_from(v10)
+    # e10 = EDGEremoveSPrandomWEIGHTEDexpovariate(G, edgeLimit, target)
+    # solutions.append((v10, e10))
 
 
     #Maximize over the solutions
