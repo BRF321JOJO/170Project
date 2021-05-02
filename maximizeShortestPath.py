@@ -26,7 +26,16 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
 
     # Solution 3
     #Try repeated k=5 brute forces
-
+    # G = H.copy()
+    # v3 = VERTEXremoveRandomized(G, vertexLimit, target)
+    # G.remove_nodes_from(v3)
+    # e3 = []
+    # while edgeLimit > 0:
+    #    new_removed = EDGEremoveBruteForce(G, 3, target)
+    #    e3.extend(new_removed)
+    #    G.remove_edges_from(new_removed)
+    #    edgeLimit -= 3
+    # solutions.append((v3, e3))
 
     # Solution 4: Randomized
     # G = H.copy()
@@ -36,11 +45,47 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     # solutions.append((v4, e4))
 
     # Solution 5: Random over SP
+    # G = H.copy()
+    # v5 = VERTEXremoveSPrandom(G, vertexLimit, target)
+    # G.remove_nodes_from(v5)
+    # e5 = EDGEremoveSPrandom(G, edgeLimit, target)
+    # solutions.append((v5, e5))
+
+    # Solution 6: Random over SP reversed
+    # G = H.copy()
+    # e6 = EDGEremoveSPrandom(G, edgeLimit, target)
+    # G.remove_edges_from(e6)
+    # v6 = VERTEXremoveSPrandom(G, vertexLimit, target)
+    # solutions.append((v6, e6))
+
+    # Solution 7: Random vertex, edges over SP
+    # G = H.copy()
+    # v5 = VERTEXremoveRandomized(G, vertexLimit, target)
+    # G.remove_nodes_from(v5)
+    # e5 = EDGEremoveSPrandom(G, edgeLimit, target)
+    # solutions.append((v5, e5))
+
+    # Solution 8: Random along SP with weight to lighter edges
+    # G = H.copy()
+    # v8 = VERTEXremoveSPrandom(G, vertexLimit, target)
+    # G.remove_nodes_from(v8)
+    # e8 = EDGEremoveSPrandomWEIGHTED(G, edgeLimit, target)
+    # solutions.append((v8, e8))
+
+    # Solution 9: Random along SP with reversed weights to lighter edges
+    # G = H.copy()
+    # v9 = VERTEXremoveSPrandom(G, vertexLimit, target)
+    # G.remove_nodes_from(v9)
+    # e9 = EDGEremoveSPrandomWEIGHTEDreversed(G, edgeLimit, target)
+    # solutions.append((v9, e9))
+
+    # Solution 10:
     G = H.copy()
-    v5 = VERTEXremoveRandomized(G, vertexLimit, target)
-    G.remove_nodes_from(v5)
-    e5 = EDGEremoveSPrandom(G, edgeLimit, target)
-    solutions.append((v5, e5))
+    v10 = VERTEXremoveSPrandom(G, vertexLimit, target)
+    G.remove_nodes_from(v10)
+    e10 = EDGEremoveSPrandomWEIGHTEDexpovariate(G, edgeLimit, target)
+    solutions.append((v10, e10))
+
 
     #Maximize over the solutions
     return max(solutions, key=lambda x: calculate_score(H, x[0], x[1]))
@@ -78,9 +123,29 @@ def VERTEXremoveRandomized(G, vertexLimit, target):
     return []
 
 
+def VERTEXremoveSPrandom(G, vertexLimit, target):
+    removed_vertices = []
+    for i in range(vertexLimit):  # Remove vertexLimit nodes
+        sp = shortestPath(G, target)  # Calculate new shortest path in G
+        sp = sp[1:len(sp)-1]
+        random.shuffle(sp)
+
+        update = False
+        for vertex in sp:
+            if vertex not in nx.articulation_points(G):  # Don't remove node that disconnects graph
+                update = True
+                G.remove_node(vertex)
+                removed_vertices.append(vertex)
+                break
+
+        if not update:  # Break loop when shortest path cannot increase without disconnecting graph
+            break
+
+    return removed_vertices
+
 
 def EDGEremoveRandomized(G, edgeLimit):
-    edgeLimit = min(edgeLimit, G.number_of_edges)
+    edgeLimit = min(edgeLimit, G.number_of_edges())
 
     while edgeLimit > 0:
         to_remove = random.sample(G.edges(), k=edgeLimit)
@@ -134,6 +199,84 @@ def EDGEremoveGreedyShortest(G, edgeLimit, target):
 
     return removed_edges
 
+def EDGEremoveSPrandomWEIGHTED(G, edgeLimit, target):
+    removed_edges = []
+    for i in range(edgeLimit):  # Remove edgeLimit edges
+        sp = shortestPath(G, target)  # Calculate new shortest path in G
+        sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]  # Convert shortest path to list of edges
+        random.shuffle(sp_edges)
+
+        if len(sp_edges) > 1:
+            weight = sp_edges[0:2]
+            weight.sort(key=lambda edge: G[edge[0]][edge[1]]['weight'])
+            sp_edges[0:2] = weight[0:2]
+
+        update = False
+        for edge in sp_edges:
+            edgeReverse = (edge[1], edge[0])
+            bridgeList = list(nx.bridges(G))
+            if (edge not in bridgeList) and (edgeReverse not in bridgeList):  # Don't remove edge that disconnects graph
+                update = True
+                G.remove_edge(edge[0], edge[1])
+                removed_edges.append(edge)
+                break
+
+        if not update:  # Break loop when shortest path cannot increase without disconnecting graph
+            break
+
+    return removed_edges
+
+def EDGEremoveSPrandomWEIGHTEDreversed(G, edgeLimit, target):
+    removed_edges = []
+    for i in range(edgeLimit):  # Remove edgeLimit edges
+        sp = shortestPath(G, target)  # Calculate new shortest path in G
+        sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]  # Convert shortest path to list of edges
+        random.shuffle(sp_edges)
+
+        if len(sp_edges) > 4:
+            weight = sp_edges[0:5]
+            weight.sort(key=lambda edge: G[edge[0]][edge[1]]['weight'], reverse=True)
+            sp_edges[0:5] = weight[0:5]
+
+        update = False
+        for edge in sp_edges:
+            edgeReverse = (edge[1], edge[0])
+            bridgeList = list(nx.bridges(G))
+            if (edge not in bridgeList) and (edgeReverse not in bridgeList):  # Don't remove edge that disconnects graph
+                update = True
+                G.remove_edge(edge[0], edge[1])
+                removed_edges.append(edge)
+                break
+
+        if not update:  # Break loop when shortest path cannot increase without disconnecting graph
+            break
+
+    return removed_edges
+
+
+def EDGEremoveSPrandomWEIGHTEDexpovariate(G, edgeLimit, target):
+    removed_edges = []
+    for i in range(edgeLimit):  # Remove edgeLimit edges
+        sp = shortestPath(G, target)  # Calculate new shortest path in G
+        sp_edges = [(sp[i], sp[i + 1]) for i in range(len(sp) - 1)]  # Convert shortest path to list of edges
+        random.shuffle(sp_edges)
+
+        sp_edges.sort(key=lambda x: random.expovariate(0.5*G[x[0]][x[1]]['weight']))
+
+        update = False
+        for edge in sp_edges:
+            edgeReverse = (edge[1], edge[0])
+            bridgeList = list(nx.bridges(G))
+            if (edge not in bridgeList) and (edgeReverse not in bridgeList):  # Don't remove edge that disconnects graph
+                update = True
+                G.remove_edge(edge[0], edge[1])
+                removed_edges.append(edge)
+                break
+
+        if not update:  # Break loop when shortest path cannot increase without disconnecting graph
+            break
+
+    return removed_edges
 
 def EDGEremoveSPrandom(G, edgeLimit, target):
     removed_edges = []

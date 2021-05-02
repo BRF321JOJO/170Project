@@ -1,57 +1,43 @@
 import random
-
 from parse import read_input_file, write_output_file, read_output_file
-from utils import is_valid_solution, calculate_score
+from utils import calculate_score
 import glob
-
 import sys
-import os.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from solver import solve
 
+# Specify files not to run...
+small_skip = [2, 18, 21, 22, 24, 26, 31, 47, 48, 49, 51, 53, 56, 60, 63, 67, 74, 75, 84, 85, 89, 92, 93, 95, 100,114, 120, 125, 129, 133, 139, 141, 147, 151, 158, 159, 161, 164, 166, 168, 170, 174, 176, 177, 178,179, 186, 187, 188, 190, 194, 195, 196, 198, 199, 201, 205, 209, 210, 212, 213, 215, 221, 224, 227,230, 233, 235, 236, 246, 254, 259, 263]
+medium_skip = [18, 24, 31, 35, 48, 49, 51, 53, 54, 60, 67, 75, 85, 89, 100, 120, 129, 133, 139, 160, 164, 166, 167,174, 176, 179, 186, 194, 195, 196, 198, 199, 212, 215, 221, 222, 227, 233, 236, 262]
+large_skip = [31, 35, 46, 48, 49, 51, 53, 54, 60, 63, 67, 75, 85, 89, 90, 92, 100, 120, 133, 139, 151, 164, 168,174, 176, 195, 198, 199, 212, 215, 221, 227, 262]
+small_skip_paths = ["inputs/small/small-" + str(x) + '.in' for x in small_skip]
+medium_skip_paths = ["inputs/medium/medium-" + str(x) + '.in' for x in medium_skip]
+large_skip_paths = ["inputs/large/large-" + str(x) + '.in' for x in large_skip]
 
 if __name__ == '__main__':
     number_iters = int(sys.argv[1])  # Specifies the number of iterations to run per file
-    specified_files = sys.argv[2:]  #Specifies running certain files
 
     overall_improvement = 0  # Counts the number of outputs improved
 
-    inputs = glob.glob('inputs/*')
-    random.shuffle(inputs)
+    folders = glob.glob('inputs/*')
+    random.shuffle(folders)
 
-    for input_path in inputs:  # Iterate through folders in inputs
-        files = glob.glob(input_path + "/*")
-
-        if specified_files:
-            files = list(specified_files)
-
+    for folder in folders:  # Iterate through folders in inputs
+        files = glob.glob(folder + "/*")
         random.shuffle(files)
-
-        size = input_path[7:]
-
-        # Specify files not to run
-        small_files_to_skip = [2,18,21,22,24,26,31,47,48,49,51,53,56,60,63,67,74,75,84,85,89,92,93,95,100,114,120,125,129,133,139,141,147,151,158,159,161,164,166,168,170,174,176,177,178,179,186,187,188,190,194,195,196,198,199,201,205,209,210,212,213,215,221,224,227,230,233,235,236,246,254,259,263]
-        small_files_to_skip_strings = [input_path + '/' + size + '-' + str(x) + '.in' for x in small_files_to_skip]
-        medium_files_to_skip = [18,31,35,48,49,51,53,54,60,67,75,85,89,100,120,129,133,139,160,164,166,167,174,176,179,186,194,195,196,198,199,212,215,221,222,227,233,236,262]
-        medium_files_to_skip_strings = [input_path + '/' + size + '-' + str(x) + '.in' for x in medium_files_to_skip]
-        large_files_to_skip = [31,35,46,48,49,51,53,54,60,63,67,75,85,89,90,92,100,120,133,139,151,164,168,174,176,195,198,199,212,215,221,227,262]
-        large_files_to_skip_strings = [input_path + '/' + size + '-' + str(x) + '.in' for x in large_files_to_skip]
+        size = folder[7:]
 
         if size == "small":
-            files = [x for x in files if x not in small_files_to_skip_strings]
+            skip_paths = small_skip_paths
         elif size == "medium":
-            files = [x for x in files if x not in medium_files_to_skip_strings]
-        elif size == "large":
-            files = [x for x in files if x not in large_files_to_skip_strings]
+            skip_paths = medium_skip_paths
         else:
-            assert "FAILED TO CATCH ON CORRECT SIZE, 2"
+            skip_paths = large_skip_paths
 
+        files = [x for x in files if x not in skip_paths]
 
         for file_path in files:  # Iterates through every file in every folder
             print("Begin processing {}".format(file_path))
             G = read_input_file(file_path)  # Reads in the next graph
-
 
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
 
@@ -60,9 +46,7 @@ if __name__ == '__main__':
             was_improvement = False
 
             for i in range(number_iters):
-                # print("Iteration: " + str(i + 1))
-
-                v, e = solve(G, size, file_path)  # Calculates the list of vertices (v) and edges (e) to remove
+                v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
 
                 currBest_distance = read_output_file(G, output_path)
                 this_distance = calculate_score(G, v, e)

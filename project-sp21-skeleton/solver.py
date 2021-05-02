@@ -1,5 +1,5 @@
 from parse import read_input_file, write_output_file, read_output_file
-from utils import is_valid_solution, calculate_score
+from utils import calculate_score
 import glob
 
 import sys
@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from maximizeShortestPath import genMaxShortestPath
 
 
-def solve(G, size, file_path):
+def solve(G, size):
     """
     Args:
         G: networkx.Graph
@@ -45,7 +45,7 @@ if __name__ == '__main__':
             G = read_input_file(file_path)  # Reads in the next graph
 
             size = input_path[7:]
-            v, e = solve(G, size, file_path)  # Calculates the list of vertices (v) and edges (e) to remove
+            v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
 
             output_path = 'outputs/' + file_path[7:][:-3] + '.out'
             currBest_distance = read_output_file(G, output_path)
