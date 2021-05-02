@@ -8,59 +8,61 @@ from shortestPathFile import shortestPath
 import random
 
 
-def VERTEXremoveGreedyHighestDegree(G, vertexLimit, target):
-    removed_nodes = []
-    for i in range(vertexLimit):  # Remove vertexLimit vertices
-        sp = shortestPath(G, target)  # Calculate new shortest path in G
-        sp = sp[1:len(sp)-1]   # Don't consider s and t for removal
-        sp.sort(reverse=True, key=lambda v: G.degree[v])  # Sort vertices by decreasing degree
+"""Removes random vertex from the SP repeatedly, but weighted by heuristic. 
+   Does not disconnect graph. """
+def VERTEX_SPrandom(G, vertexLimit, target, heuristic):
+    to_remove = []
+    for i in range(vertexLimit):
 
-        for vertex in sp:
-            if vertex not in nx.articulation_points(G):  # If removing this vertex would not disconnect graph
-                G.remove_node(vertex)
-                removed_nodes.append(vertex)
-                break
+        # 1. Calculate nodes on SP for current graph that do not disconnect graph
+        sp = shortestPath(G, target)
+        sp_nodes = sp[1:len(sp)-1]
+        articulation_list = list(nx.articulation_points(G))
+        sp_nodes = [node for node in sp_nodes if node not in articulation_list]
 
-    return removed_nodes
-
-
-
-def VERTEXremoveSPrandom(G, vertexLimit, target):
-    removed_vertices = []
-    for i in range(vertexLimit):  # Remove vertexLimit nodes
-        sp = shortestPath(G, target)  # Calculate new shortest path in G
-        sp = sp[1:len(sp)-1]
-        random.shuffle(sp)
-
-        update = False
-        for vertex in sp:
-            if vertex not in nx.articulation_points(G):  # Don't remove node that disconnects graph
-                update = True
-                G.remove_node(vertex)
-                removed_vertices.append(vertex)
-                break
-
-        if not update:  # Break loop when shortest path cannot increase without disconnecting graph
+        # 2. If no nodes can be removed along SP without disconnecting graph, break loop.
+        if not sp_nodes:
             break
 
-    return removed_vertices
+        # 3. Sort nodes by heuristic. Remove first one.
+        heuristic(G, sp_nodes)
+
+        first_node = sp_nodes[0]
+        G.remove_node(first_node)
+        to_remove.append(first_node)
+
+    return to_remove
 
 
-def VERTEXremoveRandomized(G, vertexLimit, target):
+
+
+#### Heuristics: Remove random nodes on SP ####
+
+def VERTEX_SPtrueRandom(G, sp_nodes):
+    random.shuffle(sp_nodes)
+
+# Consider adding randomness to this degree heuristic
+def VERTEX_HighestDegree(G, sp_nodes):
+    sp_nodes.sort(reverse=True, key=lambda v: G.degree[v])  # Sort vertices by decreasing degree
+
+
+
+
+#### Completely random algorithm ####
+
+""" Picks a random set of vertexLimit nodes to remove. Connot disconenct graph. Tries 100 times."""
+def VERTEX_TrueRandom(G, vertexLimit, target):
     vertices = list(G.nodes())
     vertices.remove(0)
     vertices.remove(target)
-    vertexLimit = min(vertexLimit, len(vertices))
-
-    while vertexLimit > 0:
+    vertexLimit = min(vertexLimit, G.number_of_nodes())
+    tries = 100
+    while tries:
         to_remove = random.sample(vertices, k=vertexLimit)
         H = G.copy()
         H.remove_nodes_from(to_remove)
-
-        if not nx.is_connected(H):
-            vertexLimit -= 1
-        else:
+        if nx.is_connected(H):
             return to_remove
-
-    print("OUTPUT FAILED ENTIRELY, vertices")
+        else:
+            tries -= 1
     return []

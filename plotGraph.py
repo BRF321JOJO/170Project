@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     target = G.number_of_nodes()-1
     print("Target is: " + str(target))
-    print("Old imprvement: " + str(distance))
+    print("Old improvement: " + str(distance))
 
     # Manually remove edges
     H = G.copy()
