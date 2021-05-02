@@ -27,7 +27,7 @@ if __name__ == '__main__':
         this_distance = calculate_score(G, v, e)
         sum_distance += this_distance
 
-        print("AVERAGE DISTANCE: " + str(sum_distance / (i+1)) + "            THIS DISTANCE: " + str(this_distance))
+        print('AVERAGE DISTANCE: {:25} THIS DISTANCE: {:10} SP: '.format(str(sum_distance / (i+1)), str(this_distance)), str(currBest_distance))
         if currBest_distance < this_distance:
             improvements += 1
             total_path_increased += (this_distance - currBest_distance)
