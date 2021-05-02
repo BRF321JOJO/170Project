@@ -4,6 +4,7 @@ import sys
 from solver import solve
 import re
 
+
 if __name__ == '__main__':
     number_iters = int(sys.argv[1])  # Specifies the number of iterations to run per file
     file = sys.argv[2]  # Specifies running certain file
