@@ -45,6 +45,12 @@ def VERTEX_SPtrueRandom(G, sp_nodes):
 def VERTEX_HighestDegree(G, sp_nodes):
     sp_nodes.sort(reverse=True, key=lambda v: G.degree[v])  # Sort vertices by decreasing degree
 
+    if len(sp_nodes) > 1:
+        spice = sp_nodes[1:]
+        random.shuffle(spice)
+        test = random.uniform(0, 1)
+        if test > 0.85:
+            sp_nodes[0] = spice[0]
 
 
 

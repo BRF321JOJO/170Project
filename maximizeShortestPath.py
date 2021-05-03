@@ -75,11 +75,25 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     # e8 = EDGE_SPrandom(G, edgeLimit, target, EDGE_shortest)
     # solutions.append((v8, e8))
 
+    # Solution 8.5: Solution 8 reversed
+    # G = H.copy()
+    # e8 = EDGE_SPrandom(G, edgeLimit, target, EDGE_shortest)
+    # G.remove_edges_from(e8)
+    # v8 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
+    # solutions.append((v8, e8))
+
     # Solution 9: Vertex SP random -> Edge SP random, weighted by largest
     # G = H.copy()
     # v9 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
     # G.remove_nodes_from(v9)
     # e9 = EDGE_SPrandom(G, edgeLimit, target, EDGE_shortestReversed)
+    # solutions.append((v9, e9))
+
+    #Solution 9.5: Solution 9 reversed
+    # G = H.copy()
+    # e9 = EDGE_SPrandom(G, edgeLimit, target, EDGE_shortestReversed)
+    # G.remove_edges_from(e9)
+    # v9 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
     # solutions.append((v9, e9))
 
     # Solution 10: Vertex SP random -> Edge SP random, weighted by expovariate
@@ -90,18 +104,18 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     # solutions.append((v10, e10))
 
     # Solution 11: Vertex SP random -> Edge SP random, weighted by minimizing the creation of bridges
-    # G = H.copy()
-    # v11 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
-    # G.remove_nodes_from(v11)
-    # e11 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
-    # solutions.append((v11, e11))
+    G = H.copy()
+    v11 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
+    G.remove_nodes_from(v11)
+    e11 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
+    solutions.append((v11, e11))
 
     # Solution 12: Solution 11 but reversed
-    G = H.copy()
-    e12 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
-    G.remove_edges_from(e12)
-    v12 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
-    solutions.append((v12, e12))
+    # G = H.copy()
+    # e12 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
+    # G.remove_edges_from(e12)
+    # v12 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_SPtrueRandom)
+    # solutions.append((v12, e12))
 
     # Solution 21: Vertex true random -> Edge SP random, weighted by minimizing the creation of bridges
     # G = H.copy()
@@ -115,6 +129,20 @@ def genMaxShortestPath(H, vertexLimit, edgeLimit):
     # e11 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
     # G.remove_edges_from(e11)
     # v11 = VERTEX_TrueRandom(G, vertexLimit, target)
+    # solutions.append((v11, e11))
+
+    #Solution 24: Weight vertex by highest degree
+    # G = H.copy()
+    # v11 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_HighestDegree)
+    # G.remove_nodes_from(v11)
+    # e11 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
+    # solutions.append((v11, e11))
+
+    # Solution 25: Solution 24 reversed
+    # G = H.copy()
+    # e11 = EDGE_SPrandom(G, edgeLimit, target, EDGE_avoidMakingBridges)
+    # G.remove_edges_from(e11)
+    # v11 = VERTEX_SPrandom(G, vertexLimit, target, VERTEX_HighestDegree)
     # solutions.append((v11, e11))
 
 

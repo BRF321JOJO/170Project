@@ -21,6 +21,7 @@ if __name__ == '__main__':
     total_path_increased = 0  # Tracks the total path increased for this output
 
     sum_distance = 0
+
     for i in range(number_iters):
         v, e = solve(G, size)  # Calculates the list of vertices (v) and edges (e) to remove
 

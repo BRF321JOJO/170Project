@@ -57,23 +57,28 @@ def EDGE_SPrandom(G, edgeLimit, target, heuristic):
 
 #### Heuristics: Remove random edges on SP ####
 
-""" Shuffles edges. Then sorts first X inputs by smallest weight. """
+""" Shuffles edges. Then sorts weighted by smallest weight. """
 def EDGE_shortest(G, sp_edges):
-    X = 3
-    random.shuffle(sp_edges)
-    if len(sp_edges) >= X:
-        weight = sp_edges[0:X]
-        weight.sort(key=lambda edge: G[edge[0]][edge[1]]['weight'])
-        sp_edges[0:X] = weight[0:X]
+    sp_edges.sort(key=lambda edge: G[edge[0]][edge[1]]['weight'])
 
-""" Shuffes edges. Then sorts first X inputs by largest weight. """
+    if len(sp_edges) > 1:
+        spice = sp_edges[1:]
+        random.shuffle(spice)
+        test = random.uniform(0, 1)
+        if test > 0.85:
+            sp_edges[0] = spice[0]
+
+
+""" Shuffes edges. Then sorts weighted by largest weight. """
 def EDGE_shortestReversed(G, sp_edges):
-    X = 3
-    random.shuffle(sp_edges)
-    if len(sp_edges) >= X:
-        weight = sp_edges[0:X]
-        weight.sort(key=lambda edge: G[edge[0]][edge[1]]['weight'], reverse=True)
-        sp_edges[0:X] = weight[0:X]
+    sp_edges.sort(key=lambda edge: G[edge[0]][edge[1]]['weight'], reverse=True)
+
+    if len(sp_edges) > 1:
+        spice = sp_edges[1:]
+        random.shuffle(spice)
+        test = random.uniform(0, 1)
+        if test > 0.85:
+            sp_edges[0] = spice[0]
 
 """ Shuffes edges. Then sorts probabilistically by smallest weight. """
 def EDGE_Expovariate(G, sp_edges):
