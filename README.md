@@ -18,15 +18,17 @@ First, change directory into the project-sp21-skeleton folder:
 cd 170Project/project-sp21-skeleton
 ```
 
-**To generate a randomized batch of outputs, run**:
+**Generate a batch of outputs**:
 ```bash
 python3 batchSolver.py 3
 ```
 
-**The argument to batchSolver.py specifies the number of batches to run.**
+**The argument to batchSolver.py specifies the number of iterations to run.**
 
 ***
 ## CHANGE HEURISTIC
+
+Batches are generated with a specified heuristic.
 
 The heuristic can be changed in maximizeShortestPath.py (in the 170Project directory).
 
