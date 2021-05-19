@@ -1,17 +1,24 @@
 # CS170 Spring 2021 Project:
-This is a solver for a version of the network interdiction problem.
+This is our attempt at a solver for a version of the network interdiction problem.
 
 - Given a graph G, remove a limited number of edges and vertices to maximize the shortest path from s to t without disconnecting the graph.
 ***
 
-## DEPENDENCIES:
+### PLACEMENT:
+Our team got 8th place out of 239 teams in CS170 (Spring 2021).
+![CS170_Project_Leaderboard](https://user-images.githubusercontent.com/26397543/118769555-26489300-b835-11eb-9373-1525e91e4bc4.png)
+*Excuse our silly name :)
+***
+
+## Running The Code
+### DEPENDENCIES:
 
 Please install networkx with pip3:
 ```bash
 pip3 install networkx
 ```
 ***
-## RUN INSTRUCTIONS:
+### RUN INSTRUCTIONS:
 
 First, change directory into the project-sp21-skeleton folder:
 ```bash
@@ -26,7 +33,7 @@ python3 batchSolver.py 3
 **The argument to batchSolver.py specifies the number of iterations to run.**
 
 ***
-## CHANGE HEURISTIC
+### CHANGE HEURISTIC
 
 Batches are generated with a specified heuristic.
 
