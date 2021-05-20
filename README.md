@@ -8,6 +8,8 @@ This is our attempt at a solver for a version of the network interdiction proble
 Our team got 8th place out of 239 teams in CS170 (Spring 2021).
 ![CS170_Project_Leaderboard](https://user-images.githubusercontent.com/26397543/118769555-26489300-b835-11eb-9373-1525e91e4bc4.png)
 *Excuse our silly name :)
+
+View our project report [here](https://docs.google.com/document/d/14gzYhelX6pNZh9o7sciyR5S-0RqAs1l_6eziMsTfavE/edit?usp=sharing).
 ***
 
 ## Running The Code
